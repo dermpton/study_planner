@@ -31,7 +31,7 @@ class _DashboardPageState extends State<DashBoardPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Good morning, John Doe',
+                    'Good morning, John Doe 🌅',
                     style: GoogleFonts.poppins(fontSize: 12),
                   ),
                 ],

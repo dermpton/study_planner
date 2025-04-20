@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.light_mode_sharp)),
+            IconButton(onPressed: () {}, icon: Icon(Icons.dark_mode_sharp)),
             SizedBox(width: 8),
             CircleAvatar(
               backgroundColor:
@@ -126,6 +126,9 @@ class _HomePageState extends State<HomePage> {
                   color: Theme.of(context).colorScheme.surfaceContainerHighest,
                 ),
                 child: ListTile(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                  ),
                   onTap: () {
                     Navigator.pop(context);
                     showAboutDialog(
@@ -136,9 +139,6 @@ class _HomePageState extends State<HomePage> {
                       applicationLegalese: '© dermpton. All rights reserved.',
                     );
                   },
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                  ),
                   leading: Icon(Icons.info_sharp),
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
