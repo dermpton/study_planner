@@ -76,6 +76,7 @@ flutter:
      - assets/svgs/desk-lamp-svgrepo-com.svg
      - assets/pngs/Study Planner App Splash Screen.png
      - assets/pngs/Study Planner App Splash Screen -Transparent Background.png
+     - assets/pngs/Student Studying - Transparent Background.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

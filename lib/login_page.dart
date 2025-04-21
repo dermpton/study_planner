@@ -23,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 SizedBox(height: 220),
                 Text(
-                  'Study Planner',
+                  'Study Planner App',
                   style: GoogleFonts.poppins(
                     fontSize: 30,
                     fontWeight: FontWeight.w600,
@@ -53,7 +53,6 @@ class _LoginPageState extends State<LoginPage> {
                     child: const Text('Login'),
                   ),
                 ),
-
                 SizedBox(height: 8),
                 SizedBox(
                   width: double.infinity,
