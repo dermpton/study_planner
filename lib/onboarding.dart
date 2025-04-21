@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class OnboardingPage extends StatelessWidget {
-  const OnboardingPage({super.key});
+class OnboardingPage1 extends StatelessWidget {
+  const OnboardingPage1({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -136,6 +136,68 @@ class OnboardingPage extends StatelessWidget {
                       ],
                     ),
                   ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class OnboardingPage2 extends StatelessWidget {
+  const OnboardingPage2({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const SizedBox(height: 120),
+                Text(
+                  'Introduce yourself! :D',
+                  style: GoogleFonts.poppins(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Stack(
+                  children: [
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: Transform.translate(
+                          offset: Offset(150, 125),
+                          child: Image.asset(
+                            "assets/pngs/Peaking - Onboarding Transparent Background.png",
+                            height: 420,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Transform.translate(
+                      offset: Offset(0, 200),
+                      child: Padding(
+                        padding: EdgeInsets.all(8),
+                        child: SizedBox(
+                          width: 230,
+                          child: TextField(
+                            decoration: InputDecoration(
+                              labelText: 'First Name',
+                              border: UnderlineInputBorder(),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
