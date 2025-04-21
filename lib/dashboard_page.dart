@@ -172,7 +172,10 @@ class _DashboardPageState extends State<DashBoardPage> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      leading: Icon(Icons.abc_sharp),
+                      leading: CircleAvatar(
+                        radius: 35,
+                        child: Icon(Icons.abc_sharp),
+                      ),
                       trailing: IconButton(
                         onPressed: () {
                           showModalBottomSheet(

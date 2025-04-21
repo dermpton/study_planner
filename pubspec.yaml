@@ -43,6 +43,7 @@ dependencies:
   flutter_svg: ^2.0.17
   oauth2_client: ^4.1.0
   percent_indicator: ^4.2.5
+  fl_chart: ^0.71.0
 
 dev_dependencies:
   flutter_test:
