@@ -44,6 +44,7 @@ dependencies:
   oauth2_client: ^4.1.0
   percent_indicator: ^4.2.5
   fl_chart: ^0.71.0
+  syncfusion_flutter_calendar: ^29.1.38
 
 dev_dependencies:
   flutter_test:

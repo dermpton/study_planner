@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key});
@@ -14,7 +14,9 @@ class _CalendarPageState extends State<CalendarPage> {
   * For the table_calendar api, I guess I'll have to implement the function based
   * Approach I wanted to avoid, I'll do it later there's a whole lot more UI,
   * that needs to be dealt with before any functionality is instead recommended
-  * */
+  *
+  * Scratch that we will use the sync_fusion_calendar api
+  *  */
 
   @override
   Widget build(BuildContext context) {
@@ -92,10 +94,9 @@ class _CalendarPageState extends State<CalendarPage> {
                     SizedBox(height: 8),
                   ],
                 ),
-                TableCalendar(
-                  focusedDay: DateTime.now(),
-                  firstDay: DateTime.utc(2024, 1, 1),
-                  lastDay: DateTime.utc(2026, 1, 1),
+                SfCalendar(
+                  view: CalendarView.month,
+                  initialSelectedDate: DateTime.now(),
                 ),
               ],
             ),

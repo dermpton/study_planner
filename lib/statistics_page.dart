@@ -121,6 +121,27 @@ class _StatsPageState extends State<StatsPage> {
                   LineChartData(
                     lineBarsData: [
                       LineChartBarData(
+                        isCurved: true,
+                        isStrokeCapRound: true,
+                        belowBarData: BarAreaData(
+                          show: true,
+                          gradient: const LinearGradient(
+                            colors: [
+                              Colors.red,
+                              Colors.purpleAccent,
+                              Colors.blue,
+                            ],
+                          ),
+                        ),
+                        shadow: Shadow(blurRadius: 0.75),
+                        gradient: const LinearGradient(
+                          colors: [
+                            Colors.red,
+                            Colors.purpleAccent,
+                            Colors.blue,
+                          ],
+                        ),
+                        barWidth: 4,
                         spots: const [
                           FlSpot(0, 0),
                           FlSpot(1, 1),

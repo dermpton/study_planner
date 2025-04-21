@@ -6,7 +6,14 @@ import 'package:study_planner/settings_page.dart';
 import 'package:study_planner/statistics_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final bool isDark;
+  final VoidCallback toggleDarkTheme;
+
+  const HomePage({
+    super.key,
+    required this.isDark,
+    required this.toggleDarkTheme,
+  });
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -30,7 +37,14 @@ class _HomePageState extends State<HomePage> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.dark_mode_sharp)),
+            IconButton(
+              onPressed: () {
+                widget.toggleDarkTheme();
+              },
+              icon: Icon(
+                widget.isDark ? Icons.light_mode_sharp : Icons.dark_mode_sharp,
+              ),
+            ),
             SizedBox(width: 8),
             CircleAvatar(
               backgroundColor:

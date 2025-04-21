@@ -12,8 +12,9 @@
     <list default="true" id="81b14ef9-4636-4dcc-bf8e-278e8d815c5a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dashboard_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dashboard_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/settings_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/settings_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/calendar_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/calendar_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/statistics_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/statistics_page.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
