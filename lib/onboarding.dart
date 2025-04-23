@@ -118,7 +118,15 @@ class OnboardingPage1 extends StatelessWidget {
                 SizedBox(
                   width: 140,
                   child: FilledButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return OnboardingPage2();
+                          },
+                        ),
+                      );
+                    },
                     style: FilledButton.styleFrom(
                       backgroundColor: Colors.black,
                     ),
@@ -146,9 +154,14 @@ class OnboardingPage1 extends StatelessWidget {
   }
 }
 
-class OnboardingPage2 extends StatelessWidget {
+class OnboardingPage2 extends StatefulWidget {
   const OnboardingPage2({super.key});
 
+  @override
+  State<OnboardingPage2> createState() => _OnboardingPage2State();
+}
+
+class _OnboardingPage2State extends State<OnboardingPage2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -161,7 +174,7 @@ class OnboardingPage2 extends StatelessWidget {
               children: [
                 const SizedBox(height: 120),
                 Text(
-                  'Introduce yourself! :D',
+                  'Introduce yourself! 🌿',
                   style: GoogleFonts.poppins(
                     fontSize: 30,
                     fontWeight: FontWeight.w600,
@@ -197,6 +210,37 @@ class OnboardingPage2 extends StatelessWidget {
                         ),
                       ),
                     ),
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 450),
+                          SizedBox(
+                            width: 140,
+                            child: FilledButton(
+                              onPressed: () {},
+                              style: FilledButton.styleFrom(
+                                backgroundColor: Colors.black,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Keep Going',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  Icon(Icons.chevron_right),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -205,5 +249,19 @@ class OnboardingPage2 extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class OnboardingPage3 extends StatefulWidget {
+  const OnboardingPage3({super.key});
+
+  @override
+  State<OnboardingPage3> createState() => _OnboardingPage3State();
+}
+
+class _OnboardingPage3State extends State<OnboardingPage3> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold();
   }
 }
