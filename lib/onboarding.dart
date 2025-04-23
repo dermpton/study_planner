@@ -115,26 +115,6 @@ class OnboardingPage1 extends StatelessWidget {
                     height: 100,
                   ),
                 ),
-                // Row(
-                //   children: [
-                //     Align(
-                //       alignment: Alignment.bottomLeft,
-                //       child: SizedBox(
-                //         width: 40,
-                //         child: IconButton(
-                //           onPressed: () {
-                //             Navigator.of(context).pop();
-                //           },
-                //           icon: Icon(Icons.chevron_left_sharp),
-                //           style: IconButton.styleFrom(
-                //             backgroundColor: Colors.black,
-                //             foregroundColor: Colors.white,
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -276,7 +256,15 @@ class _OnboardingPage2State extends State<OnboardingPage2> {
                                 SizedBox(
                                   width: 140,
                                   child: FilledButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return OnboardingPage3();
+                                          },
+                                        ),
+                                      );
+                                    },
                                     style: FilledButton.styleFrom(
                                       backgroundColor: Colors.black,
                                     ),
@@ -321,6 +309,7 @@ class OnboardingPage3 extends StatefulWidget {
 }
 
 class _OnboardingPage3State extends State<OnboardingPage3> {
+  int? selectedAvatarIndex;
   final List<String> _avatars = [
     "assets/avatars/Bloop - Transparent Background Resized.png",
     "assets/avatars/Goblin Profile - Transparent Background Resized.png",
@@ -336,71 +325,173 @@ class _OnboardingPage3State extends State<OnboardingPage3> {
       resizeToAvoidBottomInset: true,
       body: Padding(
         padding: EdgeInsets.all(8),
-        child: SingleChildScrollView(
-          child: SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(height: 16),
-                RichText(
-                  text: TextSpan(
-                    style: GoogleFonts.poppins(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
-                    children: [
-                      TextSpan(text: "Hi "),
-                      WidgetSpan(
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0,
-                            vertical: 2.0,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.lightGreenAccent[100],
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Text(
-                            "John",
-                            style: GoogleFonts.poppins(
-                              color: Colors.black,
-                              fontSize: 30,
-                              fontWeight: FontWeight.w600,
-                            ),
+        child: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(height: 16),
+              RichText(
+                text: TextSpan(
+                  style: GoogleFonts.poppins(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  ),
+                  children: [
+                    TextSpan(text: "Hi "),
+                    WidgetSpan(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0,
+                          vertical: 2.0,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.lightGreenAccent[100],
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Text(
+                          "John",
+                          style: GoogleFonts.poppins(
+                            color: Colors.black,
+                            fontSize: 30,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),
-                      TextSpan(text: " 👋"),
-                      TextSpan(text: ", "),
-                      TextSpan(text: "Pick your Avatar"),
-                    ],
-                  ),
+                    ),
+                    TextSpan(text: " 👋"),
+                    TextSpan(text: ", "),
+                    TextSpan(text: "Pick your Avatar"),
+                  ],
                 ),
-                SizedBox(height: 16),
-                GridView.builder(
+              ),
+              SizedBox(height: 16),
+              Expanded(
+                child: GridView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                   ),
                   itemCount: _avatars.length,
-
                   itemBuilder: (context, index) {
-                    return GridTile(
-                      child: SizedBox(
-                        height: 70,
-                        width: 70,
-                        child: Image.asset(_avatars[index]),
+                    final isSelected = (selectedAvatarIndex == index);
+
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedAvatarIndex = index;
+                        });
+                      },
+                      child: GridTile(
+                        child: Stack(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color:
+                                      isSelected
+                                          ? Colors.lightBlueAccent
+                                          : Colors.transparent,
+                                  width: 4,
+                                ),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.asset(
+                                  _avatars[index],
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            if (isSelected)
+                              Positioned(
+                                top: 8,
+                                right: 8,
+                                child: Icon(
+                                  Icons.check_circle_sharp,
+                                  color: Colors.lightBlueAccent,
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
                     );
                   },
                 ),
-              ],
-            ),
+              ),
+              SizedBox(height: 16),
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 40,
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: Icon(Icons.chevron_left_sharp),
+                        style: IconButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          foregroundColor: Colors.white,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 100),
+                    SizedBox(
+                      width: 150,
+                      child: FilledButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return OnboardingPage4();
+                              },
+                            ),
+                          );
+                        },
+                        style: FilledButton.styleFrom(
+                          backgroundColor: Colors.black,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Almost There',
+                              style: GoogleFonts.poppins(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Icon(Icons.chevron_right_sharp),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
     );
+  }
+}
+
+class OnboardingPage4 extends StatefulWidget {
+  const OnboardingPage4({super.key});
+
+  @override
+  State<OnboardingPage4> createState() => _OnboardingPage4State();
+}
+
+class _OnboardingPage4State extends State<OnboardingPage4> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold();
   }
 }
