@@ -65,7 +65,7 @@ class _StudyPlannerState extends State<StudyPlanner> {
         useMaterial3: true,
       ),
       themeMode: _isDark ? ThemeMode.dark : ThemeMode.light,
-      home: OnboardingPage1(),
+      home: OnboardingPage3(),
       // home: HomePage(isDark: _isDark, toggleDarkTheme: _toggleDarkTheme),
     );
   }
