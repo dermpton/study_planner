@@ -526,6 +526,44 @@ class OnboardingPage4 extends StatefulWidget {
 class _OnboardingPage4State extends State<OnboardingPage4> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Stack(
+                children: [
+                  Image.asset(
+                    "assets/bgs/Organic Wallpaper 3.png",
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
+                  ),
+
+                  Column(
+                    children: [
+                      SizedBox(height: 16),
+                      Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Text(
+                          "Let's set your goals in motion.",
+                          style: GoogleFonts.poppins(
+                            fontSize: 30,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

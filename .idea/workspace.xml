@@ -10,11 +10,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="81b14ef9-4636-4dcc-bf8e-278e8d815c5a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/assets/avatars/Robot Profile - Transparent Background Resized.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/bgs/Organic Wallpaper 1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/bgs/Organic Wallpaper 2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/bgs/Organic Wallpaper 3.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/avatars/Robot Profile - Transparent Background Benchmark.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/onboarding.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/onboarding.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +78,7 @@
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "io.flutter.reload.alreadyRun": "true",
-    "last_opened_file_path": "C:/Users/tcbhe/OneDrive/Documents/Programming repository/Andoid Projects/Flutter/study_planner/assets/avatars",
+    "last_opened_file_path": "C:/Users/tcbhe/OneDrive/Documents/Programming repository/Andoid Projects/Flutter/study_planner/assets",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.0",
@@ -87,8 +88,8 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\tcbhe\OneDrive\Documents\Programming repository\Andoid Projects\Flutter\study_planner\assets\avatars" />
       <recent name="C:\Users\tcbhe\OneDrive\Documents\Programming repository\Andoid Projects\Flutter\study_planner\assets" />
+      <recent name="C:\Users\tcbhe\OneDrive\Documents\Programming repository\Andoid Projects\Flutter\study_planner\assets\avatars" />
       <recent name="C:\Users\tcbhe\OneDrive\Documents\Programming repository\Andoid Projects\Flutter\study_planner\assets\pngs" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
