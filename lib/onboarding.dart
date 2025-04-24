@@ -556,6 +556,24 @@ class _OnboardingPage4State extends State<OnboardingPage4> {
                           ),
                         ),
                       ),
+                      SizedBox(height: 16),
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(50),
+                              topRight: Radius.circular(50),
+                            ),
+                            color: Colors.white,
+                          ),
+                          width: double.infinity,
+                          height: double.infinity,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [SizedBox(height: 8), Text('Sign Up')],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ],
