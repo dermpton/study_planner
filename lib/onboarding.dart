@@ -181,6 +181,14 @@ class OnboardingPage2 extends StatefulWidget {
 }
 
 class _OnboardingPage2State extends State<OnboardingPage2> {
+  final TextEditingController _nameController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -221,6 +229,9 @@ class _OnboardingPage2State extends State<OnboardingPage2> {
                         child: SizedBox(
                           width: 230,
                           child: TextField(
+                            autocorrect: true,
+                            textInputAction: TextInputAction.done,
+                            controller: _nameController,
                             decoration: InputDecoration(
                               labelText: 'First Name',
                               border: UnderlineInputBorder(),
@@ -257,10 +268,32 @@ class _OnboardingPage2State extends State<OnboardingPage2> {
                                   width: 140,
                                   child: FilledButton(
                                     onPressed: () {
+                                      final name = _nameController.text.trim();
+                                      if (name.isEmpty) {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              'Please enter your first name.',
+                                              style: GoogleFonts.poppins(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            backgroundColor: Colors.black12,
+                                            behavior: SnackBarBehavior.floating,
+                                            duration: Duration(seconds: 2),
+                                          ),
+                                        );
+                                        return;
+                                      }
+
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (context) {
-                                            return OnboardingPage3();
+                                            return OnboardingPage3(
+                                              userName: name,
+                                            );
                                           },
                                         ),
                                       );
@@ -302,7 +335,8 @@ class _OnboardingPage2State extends State<OnboardingPage2> {
 }
 
 class OnboardingPage3 extends StatefulWidget {
-  const OnboardingPage3({super.key});
+  final String userName;
+  const OnboardingPage3({super.key, required this.userName});
 
   @override
   State<OnboardingPage3> createState() => _OnboardingPage3State();
@@ -350,7 +384,7 @@ class _OnboardingPage3State extends State<OnboardingPage3> {
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: Text(
-                          "John",
+                          widget.userName,
                           style: GoogleFonts.poppins(
                             color: Colors.black,
                             fontSize: 30,
