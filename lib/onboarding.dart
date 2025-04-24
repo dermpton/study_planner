@@ -347,7 +347,7 @@ class _OnboardingPage3State extends State<OnboardingPage3> {
   final List<String> _avatars = [
     "assets/avatars/Bloop - Transparent Background Resized.png",
     "assets/avatars/Goblin Profile - Transparent Background Resized.png",
-    "assets/avatars/Robot Profile - Transparent Background Benchmark.png",
+    "assets/avatars/Robot Profile - Transparent Background Resized.png",
     "assets/avatars/Slime Profile - Transparent Background Resized.png",
     "assets/avatars/Dragon Profile - Transparent Background Resized.png",
     "assets/avatars/Treant Profile - Transparent Background Resized.png",

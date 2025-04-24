@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:study_planner/login_page.dart';
+import 'package:study_planner/onboarding.dart';
 
 void main() {
   runApp(const StudyPlanner());
@@ -65,7 +65,7 @@ class _StudyPlannerState extends State<StudyPlanner> {
         useMaterial3: true,
       ),
       themeMode: _isDark ? ThemeMode.dark : ThemeMode.light,
-      home: LoginPage(),
+      home: OnboardingPage4(),
       // home: HomePage(isDark: _isDark, toggleDarkTheme: _toggleDarkTheme),
     );
   }
