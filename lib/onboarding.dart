@@ -1,7 +1,7 @@
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:study_planner/dashboard_page.dart';
+import 'package:study_planner/home_page.dart';
 
 class OnboardingPage1 extends StatelessWidget {
   const OnboardingPage1({super.key});
@@ -535,7 +535,7 @@ class _OnboardingPage4State extends State<OnboardingPage4> {
   void initState() {
     super.initState();
     _confettiController = ConfettiController(
-      duration: const Duration(seconds: 1),
+      duration: const Duration(seconds: 10),
     );
   }
 
@@ -545,6 +545,14 @@ class _OnboardingPage4State extends State<OnboardingPage4> {
     _password.dispose();
     _confettiController.dispose();
     super.dispose();
+  }
+
+  bool _isDark = false;
+
+  void _toggleDarkTheme() {
+    setState(() {
+      _isDark = !_isDark;
+    });
   }
 
   @override
@@ -651,14 +659,15 @@ class _OnboardingPage4State extends State<OnboardingPage4> {
                                             width: 150,
                                             child: FilledButton(
                                               onPressed: () {
-                                                if (_email.text.isEmpty &&
-                                                    _password.text.isEmpty) {
+                                                if (_email.text.isEmpty ||
+                                                    _password.text.isEmpty ||
+                                                    _password.text.length < 8) {
                                                   ScaffoldMessenger.of(
                                                     context,
                                                   ).showSnackBar(
                                                     SnackBar(
                                                       content: Text(
-                                                        "Please enter a username and password.",
+                                                        "Please enter a username and password. \n Password is Less than 8 digits ",
                                                       ),
                                                       behavior:
                                                           SnackBarBehavior
@@ -680,14 +689,25 @@ class _OnboardingPage4State extends State<OnboardingPage4> {
                                                   });
                                                 }
 
-                                                Navigator.of(
-                                                  context,
-                                                ).pushReplacement(
-                                                  MaterialPageRoute(
-                                                    builder:
-                                                        (context) =>
-                                                            DashBoardPage(),
-                                                  ),
+                                                Future.delayed(
+                                                  Duration(seconds: 4),
+                                                  () {
+                                                    Navigator.pushAndRemoveUntil(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder:
+                                                            (
+                                                              context,
+                                                            ) => HomePage(
+                                                              isDark: _isDark,
+                                                              toggleDarkTheme:
+                                                                  _toggleDarkTheme,
+                                                            ),
+                                                      ),
+                                                      (Route<dynamic> route) =>
+                                                          false,
+                                                    );
+                                                  },
                                                 );
                                               },
                                               style: FilledButton.styleFrom(
