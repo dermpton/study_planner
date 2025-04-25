@@ -1,5 +1,5 @@
 name: study_planner
-description: "A new Flutter project."
+description: "A mobile app built in Flutter that helps students organize their courses and study materials efficiently."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -47,6 +47,17 @@ dependencies:
   syncfusion_flutter_calendar: ^29.1.38
   shared_preferences: ^2.5.3
   path_provider: ^2.1.5
+  flutter_launcher_icons: ^0.14.3
+
+flutter_launcher_icons:
+  image_path_android: "assets/pngs/Study Planner App Splash Screen -Transparent Background.png"
+  android: "ic_study_planner"
+  adaptive_icon_foreground_inset: 8
+  web:
+    generate: true
+    image_path: "assets/pngs/Study Planner App Splash Screen -Transparent Background.png"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
 
 dev_dependencies:
   flutter_test:
