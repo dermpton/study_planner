@@ -182,6 +182,7 @@ class OnboardingPage2 extends StatefulWidget {
   State<OnboardingPage2> createState() => _OnboardingPage2State();
 }
 
+// TODO: SET SOME MEDIA QUERIES IN HERE PLEASE
 class _OnboardingPage2State extends State<OnboardingPage2> {
   final TextEditingController _nameController = TextEditingController();
 
@@ -547,14 +548,6 @@ class _OnboardingPage4State extends State<OnboardingPage4> {
     super.dispose();
   }
 
-  bool _isDark = false;
-
-  void _toggleDarkTheme() {
-    setState(() {
-      _isDark = !_isDark;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -696,13 +689,8 @@ class _OnboardingPage4State extends State<OnboardingPage4> {
                                                       context,
                                                       MaterialPageRoute(
                                                         builder:
-                                                            (
-                                                              context,
-                                                            ) => HomePage(
-                                                              isDark: _isDark,
-                                                              toggleDarkTheme:
-                                                                  _toggleDarkTheme,
-                                                            ),
+                                                            (context) =>
+                                                                HomePage(),
                                                       ),
                                                       (Route<dynamic> route) =>
                                                           false,

@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:study_planner/add_course.dart';
 import 'package:study_planner/calendar_page.dart';
 import 'package:study_planner/dashboard_page.dart';
-import 'package:study_planner/settings_page.dart';
+import 'package:study_planner/login_page.dart';
+import 'package:study_planner/settings/settings_page.dart';
 import 'package:study_planner/statistics_page.dart';
 
 class HomePage extends StatefulWidget {
-  final bool isDark;
-  final VoidCallback toggleDarkTheme;
+  final bool? isDark;
+  final VoidCallback? toggleDarkTheme;
 
-  const HomePage({
-    super.key,
-    required this.isDark,
-    required this.toggleDarkTheme,
-  });
+  const HomePage({super.key, this.isDark, this.toggleDarkTheme});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -39,10 +37,13 @@ class _HomePageState extends State<HomePage> {
           children: [
             IconButton(
               onPressed: () {
-                widget.toggleDarkTheme();
+                widget.toggleDarkTheme!(); // I put null checks here be wary
               },
               icon: Icon(
-                widget.isDark ? Icons.light_mode_sharp : Icons.dark_mode_sharp,
+                widget.isDark!
+                    ? Icons.light_mode_sharp
+                    : Icons
+                        .dark_mode_sharp, // I put null checks here as well be wary
               ),
             ),
             SizedBox(width: 8),
@@ -53,6 +54,17 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
+      ),
+
+      resizeToAvoidBottomInset: true,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(
+            context,
+          ).push(MaterialPageRoute(builder: (context) => AddCoursePage()));
+        },
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+        child: Icon(Icons.add, size: 40),
       ),
 
       drawer: Padding(
@@ -179,6 +191,13 @@ class _HomePageState extends State<HomePage> {
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                   ),
                   leading: Icon(Icons.logout_sharp),
+                  onTap: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                      (Route<dynamic> route) => false,
+                    );
+                  },
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [

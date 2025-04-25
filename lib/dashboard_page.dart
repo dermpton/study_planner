@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:study_planner/see_all_courses.dart';
+import 'package:study_planner/view_material.dart';
 
 class DashBoardPage extends StatefulWidget {
   const DashBoardPage({super.key});
@@ -143,7 +145,13 @@ class _DashboardPageState extends State<DashBoardPage> {
                   SizedBox(
                     width: 95,
                     child: OutlinedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => SeeAllCoursesPage(),
+                          ),
+                        );
+                      },
                       child: Text(
                         'See all',
                         style: GoogleFonts.poppins(fontSize: 12),
@@ -230,7 +238,15 @@ class _DashboardPageState extends State<DashBoardPage> {
                                           style: FilledButton.styleFrom(
                                             backgroundColor: Colors.black,
                                           ),
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder:
+                                                    (context) =>
+                                                        ViewMaterialPage(),
+                                              ),
+                                            );
+                                          },
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,

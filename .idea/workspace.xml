@@ -10,10 +10,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="81b14ef9-4636-4dcc-bf8e-278e8d815c5a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/assets/pngs/No Courses Yet Solution - Transparent Background.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/add_course.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/see_all_courses.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/settings/change_password.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/settings/edit_profile.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/settings/faq.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/settings/language.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/settings/notifications.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/settings/privacy_policy.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/settings/rate_the_app.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/settings/support.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/settings/terms_of_service.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/view_material.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dashboard_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dashboard_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home_page.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/onboarding.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/onboarding.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/settings_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/settings_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/settings_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/settings/settings_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +92,7 @@
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "io.flutter.reload.alreadyRun": "true",
-    "last_opened_file_path": "C:/Users/tcbhe/OneDrive/Documents/Programming repository/Andoid Projects/Flutter/study_planner/assets",
+    "last_opened_file_path": "C:/Users/tcbhe/OneDrive/Documents/Programming repository/Andoid Projects/Flutter/study_planner/assets/pngs",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.0",
@@ -86,11 +102,12 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\tcbhe\OneDrive\Documents\Programming repository\Andoid Projects\Flutter\study_planner\assets\pngs" />
       <recent name="C:\Users\tcbhe\OneDrive\Documents\Programming repository\Andoid Projects\Flutter\study_planner\assets" />
       <recent name="C:\Users\tcbhe\OneDrive\Documents\Programming repository\Andoid Projects\Flutter\study_planner\assets\avatars" />
-      <recent name="C:\Users\tcbhe\OneDrive\Documents\Programming repository\Andoid Projects\Flutter\study_planner\assets\pngs" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\tcbhe\OneDrive\Documents\Programming repository\Andoid Projects\Flutter\study_planner\lib\settings" />
       <recent name="C:\Users\tcbhe\OneDrive\Documents\Programming repository\Andoid Projects\Flutter\study_planner\assets\svgs" />
     </key>
   </component>

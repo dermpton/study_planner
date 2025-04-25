@@ -1,5 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:study_planner/login_page.dart';
+import 'package:study_planner/settings/change_password.dart';
+import 'package:study_planner/settings/edit_profile.dart';
+import 'package:study_planner/settings/faq.dart';
+import 'package:study_planner/settings/language.dart';
+import 'package:study_planner/settings/notifications.dart';
+import 'package:study_planner/settings/privacy_policy.dart';
+import 'package:study_planner/settings/rate_the_app.dart';
+import 'package:study_planner/settings/support.dart';
+import 'package:study_planner/settings/terms_of_service.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -24,7 +34,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   Text(
                     'Settings',
                     style: GoogleFonts.poppins(
-                      fontSize: 32,
+                      fontSize: 30,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -58,7 +68,13 @@ class _SettingsPageState extends State<SettingsPage> {
                           style: GoogleFonts.poppins(fontSize: 12),
                         ),
                         trailing: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => EditProfilePage(),
+                              ),
+                            );
+                          },
                           icon: Icon(Icons.chevron_right),
                         ),
                       ),
@@ -78,7 +94,13 @@ class _SettingsPageState extends State<SettingsPage> {
                           style: GoogleFonts.poppins(fontSize: 12),
                         ),
                         trailing: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ChangePasswordPage(),
+                              ),
+                            );
+                          },
                           icon: Icon(Icons.chevron_right),
                         ),
                       ),
@@ -98,7 +120,13 @@ class _SettingsPageState extends State<SettingsPage> {
                           style: GoogleFonts.poppins(fontSize: 12),
                         ),
                         trailing: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => LanguagePage(),
+                              ),
+                            );
+                          },
                           icon: Icon(Icons.chevron_right),
                         ),
                       ),
@@ -118,7 +146,13 @@ class _SettingsPageState extends State<SettingsPage> {
                           style: GoogleFonts.poppins(fontSize: 12),
                         ),
                         trailing: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => NotificationsPage(),
+                              ),
+                            );
+                          },
                           icon: Icon(Icons.chevron_right),
                         ),
                       ),
@@ -143,7 +177,13 @@ class _SettingsPageState extends State<SettingsPage> {
                           style: GoogleFonts.poppins(fontSize: 12),
                         ),
                         trailing: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => PrivacyPolicyPage(),
+                              ),
+                            );
+                          },
                           icon: Icon(Icons.chevron_right),
                         ),
                       ),
@@ -163,7 +203,13 @@ class _SettingsPageState extends State<SettingsPage> {
                           style: GoogleFonts.poppins(fontSize: 12),
                         ),
                         trailing: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => FAQPage(),
+                              ),
+                            );
+                          },
                           icon: Icon(Icons.chevron_right),
                         ),
                       ),
@@ -183,7 +229,13 @@ class _SettingsPageState extends State<SettingsPage> {
                           style: GoogleFonts.poppins(fontSize: 12),
                         ),
                         trailing: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => TOSPage(),
+                              ),
+                            );
+                          },
                           icon: Icon(Icons.chevron_right),
                         ),
                       ),
@@ -203,7 +255,13 @@ class _SettingsPageState extends State<SettingsPage> {
                           style: GoogleFonts.poppins(fontSize: 12),
                         ),
                         trailing: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => RateTheAppPage(),
+                              ),
+                            );
+                          },
                           icon: Icon(Icons.chevron_right),
                         ),
                       ),
@@ -223,7 +281,13 @@ class _SettingsPageState extends State<SettingsPage> {
                           style: GoogleFonts.poppins(fontSize: 12),
                         ),
                         trailing: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => SupportPage(),
+                              ),
+                            );
+                          },
                           icon: Icon(Icons.chevron_right),
                         ),
                       ),
@@ -243,7 +307,15 @@ class _SettingsPageState extends State<SettingsPage> {
                           style: GoogleFonts.poppins(fontSize: 12),
                         ),
                         trailing: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginPage(),
+                              ),
+                              (Route<dynamic> route) => false,
+                            );
+                          },
                           icon: Icon(Icons.chevron_right),
                         ),
                       ),
