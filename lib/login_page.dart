@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(height: 100),
                     TextField(
                       decoration: InputDecoration(
-                        labelText: 'Email',
+                        labelText: 'Username',
                         border: UnderlineInputBorder(),
                       ),
                     ),

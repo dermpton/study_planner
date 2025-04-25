@@ -1,5 +1,7 @@
+import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:study_planner/dashboard_page.dart';
 
 class OnboardingPage1 extends StatelessWidget {
   const OnboardingPage1({super.key});
@@ -524,10 +526,31 @@ class OnboardingPage4 extends StatefulWidget {
 }
 
 class _OnboardingPage4State extends State<OnboardingPage4> {
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+
+  late ConfettiController _confettiController;
+
+  @override
+  void initState() {
+    super.initState();
+    _confettiController = ConfettiController(
+      duration: const Duration(seconds: 1),
+    );
+  }
+
+  @override
+  void dispose() {
+    _email.dispose();
+    _password.dispose();
+    _confettiController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -541,7 +564,6 @@ class _OnboardingPage4State extends State<OnboardingPage4> {
                     width: double.infinity,
                     height: double.infinity,
                   ),
-
                   Column(
                     children: [
                       SizedBox(height: 16),
@@ -570,11 +592,144 @@ class _OnboardingPage4State extends State<OnboardingPage4> {
                           height: double.infinity,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
-                            children: [SizedBox(height: 8), Text('Sign Up')],
+                            children: [
+                              SizedBox(height: 8),
+                              Text(
+                                'Sign Up',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              Padding(
+                                padding: EdgeInsets.all(16),
+                                child: Column(
+                                  children: [
+                                    TextFormField(
+                                      controller: _email,
+                                      decoration: InputDecoration(
+                                        label: Text('Username'),
+                                      ),
+                                    ),
+                                    SizedBox(height: 16),
+                                    TextFormField(
+                                      controller: _password,
+                                      obscureText: true,
+                                      decoration: InputDecoration(
+                                        label: Text('Password'),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                          0.38,
+                                    ),
+                                    Align(
+                                      alignment: Alignment.bottomLeft,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            width: 40,
+                                            child: IconButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              icon: Icon(
+                                                Icons.chevron_left_sharp,
+                                              ),
+                                              style: IconButton.styleFrom(
+                                                backgroundColor: Colors.black,
+                                                foregroundColor: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(width: 100),
+                                          SizedBox(
+                                            width: 150,
+                                            child: FilledButton(
+                                              onPressed: () {
+                                                if (_email.text.isEmpty &&
+                                                    _password.text.isEmpty) {
+                                                  ScaffoldMessenger.of(
+                                                    context,
+                                                  ).showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(
+                                                        "Please enter a username and password.",
+                                                      ),
+                                                      behavior:
+                                                          SnackBarBehavior
+                                                              .floating,
+                                                      margin: EdgeInsets.all(8),
+                                                      duration: Duration(
+                                                        seconds: 2,
+                                                      ),
+                                                    ),
+                                                  );
+                                                  return;
+                                                }
+
+                                                // Will let feature/core-logic handle this and more to come too
+                                                // still incomplete
+                                                if (mounted) {
+                                                  setState(() {
+                                                    _confettiController.play();
+                                                  });
+                                                }
+
+                                                Navigator.of(
+                                                  context,
+                                                ).pushReplacement(
+                                                  MaterialPageRoute(
+                                                    builder:
+                                                        (context) =>
+                                                            DashBoardPage(),
+                                                  ),
+                                                );
+                                              },
+                                              style: FilledButton.styleFrom(
+                                                backgroundColor: Colors.black,
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    'Submit',
+                                                    style: GoogleFonts.poppins(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                  Icon(
+                                                    Icons.chevron_right_sharp,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
                     ],
+                  ),
+                  ConfettiWidget(
+                    confettiController: _confettiController,
+                    blastDirectionality: BlastDirectionality.explosive,
+                    shouldLoop: false,
+                    numberOfParticles: 200,
                   ),
                 ],
               ),
