@@ -10,6 +10,17 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _userName = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+
+  @override
+  void dispose() {
+    _userName.dispose();
+    _password.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +51,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     SizedBox(height: 100),
                     TextField(
+                      controller: _userName,
                       decoration: InputDecoration(
                         labelText: 'Username',
                         border: UnderlineInputBorder(),
@@ -48,6 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(height: 16),
                     TextField(
                       obscureText: true,
+                      controller: _password,
                       decoration: InputDecoration(
                         labelText: 'Password',
                         border: UnderlineInputBorder(),
