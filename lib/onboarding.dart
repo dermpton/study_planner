@@ -2,6 +2,7 @@ import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:study_planner/home_page.dart';
+import 'package:study_planner/prefs.dart';
 
 class OnboardingPage1 extends StatelessWidget {
   const OnboardingPage1({super.key});
@@ -185,6 +186,7 @@ class OnboardingPage2 extends StatefulWidget {
 // TODO: SET SOME MEDIA QUERIES IN HERE PLEASE
 class _OnboardingPage2State extends State<OnboardingPage2> {
   final TextEditingController _nameController = TextEditingController();
+  final Prefs _prefs = Prefs();
 
   @override
   void dispose() {
@@ -271,8 +273,7 @@ class _OnboardingPage2State extends State<OnboardingPage2> {
                                   width: 140,
                                   child: FilledButton(
                                     onPressed: () {
-                                      final name = _nameController.text.trim();
-                                      if (name.isEmpty) {
+                                      if (_nameController.text.trim().isEmpty) {
                                         ScaffoldMessenger.of(
                                           context,
                                         ).showSnackBar(
@@ -291,11 +292,16 @@ class _OnboardingPage2State extends State<OnboardingPage2> {
                                         return;
                                       }
 
+                                      _prefs.nameDuringOnboarding(
+                                        _nameController.text.trim(),
+                                      );
+
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (context) {
                                             return OnboardingPage3(
-                                              userName: name,
+                                              userName:
+                                                  _nameController.text.trim(),
                                             );
                                           },
                                         ),
@@ -347,6 +353,8 @@ class OnboardingPage3 extends StatefulWidget {
 
 class _OnboardingPage3State extends State<OnboardingPage3> {
   int? selectedAvatarIndex;
+  final Prefs _prefs = Prefs();
+
   final List<String> _avatars = [
     "assets/avatars/Bloop - Transparent Background Resized.png",
     "assets/avatars/Goblin Profile - Transparent Background Resized.png",
@@ -418,6 +426,9 @@ class _OnboardingPage3State extends State<OnboardingPage3> {
                       onTap: () {
                         setState(() {
                           selectedAvatarIndex = index;
+                          _prefs.selectedAvatar(
+                            _avatars[selectedAvatarIndex as int],
+                          );
                         });
                       },
                       child: GridTile(
@@ -737,7 +748,7 @@ class _OnboardingPage4State extends State<OnboardingPage4> {
                     confettiController: _confettiController,
                     blastDirectionality: BlastDirectionality.explosive,
                     shouldLoop: false,
-                    numberOfParticles: 200,
+                    numberOfParticles: 300,
                   ),
                 ],
               ),

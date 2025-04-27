@@ -1,4 +1,9 @@
+import 'dart:async';
+
+import 'package:bcrypt/bcrypt.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 /*
@@ -64,10 +69,6 @@ import 'package:sqflite/sqflite.dart';
   * class. So the above code snippet is justified otherwise where else,
   * could you declare it and use it having to produce a single instance?
   *
-  * DatabaseHelper._internal();
-  *
-  *
-  *
   * */
 
 class DatabaseHelper {
@@ -77,8 +78,7 @@ class DatabaseHelper {
   factory DatabaseHelper() => _instance;
 
   Future<Database> get database async {
-    if (_database != null) return _database!;
-    _database = await _initDb();
+    _database ??= await _initDb();
     return _database!;
   }
 
@@ -130,5 +130,41 @@ class DatabaseHelper {
         ''');
       },
     );
+  }
+
+  Future<String> hashPassword(TextEditingController password) async {
+    return BCrypt.hashpw(password.text, BCrypt.gensalt());
+  }
+
+  Future<void> insertCredentials(
+    TextEditingController userName,
+    TextEditingController password,
+  ) async {
+    final credentials = {
+      'username': userName.text.trim(),
+      'password': hashPassword(password),
+    }; // JSON is the mapping paradigm
+
+    final db = await database;
+    await db.insert(
+      'credentials',
+      credentials,
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  // Onboarding2
+  Future<void> insertName() async {
+    final db = await database;
+    final prefs = await SharedPreferences.getInstance();
+    await db.insert('credentials', {
+      'name': prefs.getString('name'),
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  // Reading but nah not yet, there's nothing for me here yet
+  Future<List<Map<String, dynamic>>> getAllCredentials() async {
+    final db = await database;
+    return await db.query('credentials');
   }
 }

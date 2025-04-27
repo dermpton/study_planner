@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:study_planner/home_page.dart';
+import 'package:provider/provider.dart';
+import 'package:study_planner/app_launcher.dart';
 
-void main() {
-  runApp(const StudyPlanner());
+import 'theme_notifier.dart';
+
+void main() async {
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeNotifier(),
+      child: const StudyPlanner(),
+    ),
+  );
+  WidgetsFlutterBinding.ensureInitialized();
+  //   I got the following from https://docs.flutter.dev/cookbook/persistence/sqlite
 }
 
 class StudyPlanner extends StatefulWidget {
@@ -14,13 +24,13 @@ class StudyPlanner extends StatefulWidget {
 }
 
 class _StudyPlannerState extends State<StudyPlanner> {
-  bool _isDark = false;
-
-  void _toggleDarkTheme() {
-    setState(() {
-      _isDark = !_isDark;
-    });
-  }
+  // bool _isDark = false;
+  //
+  // void _toggleDarkTheme() {
+  //   setState(() {
+  //     _isDark = !_isDark;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +57,13 @@ class _StudyPlannerState extends State<StudyPlanner> {
         textTheme: GoogleFonts.poppinsTextTheme(),
         useMaterial3: true,
       ),
-      themeMode: _isDark ? ThemeMode.dark : ThemeMode.light,
+      themeMode:
+          Provider.of<ThemeNotifier>(context).isDark
+              ? ThemeMode.dark
+              : ThemeMode.light,
       // home: AddCoursePage(),
-      home: HomePage(isDark: _isDark, toggleDarkTheme: _toggleDarkTheme),
+      home: AppLauncher(),
+      // home: HomePage(isDark: _isDark, toggleDarkTheme: _toggleDarkTheme),
     );
   }
 }

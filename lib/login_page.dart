@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:study_planner/onboarding.dart';
+import 'package:study_planner/prefs.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -12,6 +13,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _userName = TextEditingController();
   final TextEditingController _password = TextEditingController();
+  final Prefs _prefs = Prefs();
 
   @override
   void dispose() {
@@ -70,7 +72,12 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(
                       width: double.infinity,
                       child: FilledButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          //   Chill I am putting something just now
+                          //   After the successful entry I.e., when
+                          //   transition over to home set the following true
+                          _prefs.isLoggedIn(true);
+                        },
                         child: const Text('Login'),
                       ),
                     ),

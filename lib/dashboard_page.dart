@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:study_planner/prefs.dart';
 import 'package:study_planner/see_all_courses.dart';
 import 'package:study_planner/view_material.dart';
 
@@ -19,6 +20,8 @@ class _DashboardPageState extends State<DashBoardPage> {
     'Electricity & Magnetism',
   ];
 
+  final Prefs _prefs = Prefs();
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -33,7 +36,7 @@ class _DashboardPageState extends State<DashBoardPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Good morning, John Doe 🌅',
+                    'Hi there, ${_prefs.getNameFromOnBoarding()}',
                     style: GoogleFonts.poppins(fontSize: 12),
                   ),
                 ],

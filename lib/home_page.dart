@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:study_planner/add_course.dart';
 import 'package:study_planner/calendar_page.dart';
 import 'package:study_planner/dashboard_page.dart';
 import 'package:study_planner/login_page.dart';
 import 'package:study_planner/settings/settings_page.dart';
 import 'package:study_planner/statistics_page.dart';
+import 'package:study_planner/theme_notifier.dart';
 
 class HomePage extends StatefulWidget {
-  final bool? isDark;
-  final VoidCallback? toggleDarkTheme;
+  // final bool? isDark;
+  // final VoidCallback? toggleDarkTheme;
 
-  const HomePage({super.key, this.isDark, this.toggleDarkTheme});
+  const HomePage({super.key /*this.isDark, this.toggleDarkTheme*/});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -37,13 +39,22 @@ class _HomePageState extends State<HomePage> {
           children: [
             IconButton(
               onPressed: () {
-                widget.toggleDarkTheme!(); // I put null checks here be wary
+                Provider.of<ThemeNotifier>(
+                  context,
+                  listen: false,
+                ).toggleTheme();
+                // widget.toggleDarkTheme!(); // I put null checks here be wary
               },
-              icon: Icon(
-                widget.isDark!
-                    ? Icons.light_mode_sharp
-                    : Icons
-                        .dark_mode_sharp, // I put null checks here as well be wary
+              icon: Consumer<ThemeNotifier>(
+                builder: (context, themeNotifier, child) {
+                  return Icon(
+                    themeNotifier.isDark
+                        // widget.isDark!
+                        ? Icons.light_mode_sharp
+                        : Icons
+                            .dark_mode_sharp, // I put null checks here as well be wary
+                  );
+                },
               ),
             ),
             SizedBox(width: 8),
