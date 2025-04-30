@@ -19,8 +19,21 @@ class _DashboardPageState extends State<DashBoardPage> {
     'Discrete Mathematics',
     'Electricity & Magnetism',
   ];
+  String? userNameFromOnboarding;
 
   final Prefs _prefs = Prefs();
+  Future<void> _loadUserNameFromOnboarding() async {
+    userNameFromOnboarding = await _prefs.getNameFromOnBoarding();
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserNameFromOnboarding();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +49,7 @@ class _DashboardPageState extends State<DashBoardPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Hi there, ${_prefs.getNameFromOnBoarding()}',
+                    'Hi there, $userNameFromOnboarding',
                     style: GoogleFonts.poppins(fontSize: 12),
                   ),
                 ],

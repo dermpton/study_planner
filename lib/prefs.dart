@@ -33,6 +33,11 @@ class Prefs {
     await prefs.setBool('onboarding?', hasOnboarded);
   }
 
+  Future<String?> getAvatar() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('avatarPath');
+  }
+
   Future<void> selectedAvatar(String avatarPath) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('avatarPath', avatarPath);

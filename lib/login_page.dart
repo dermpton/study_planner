@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:study_planner/database_helper.dart';
+import 'package:study_planner/home_page.dart';
 import 'package:study_planner/onboarding.dart';
 import 'package:study_planner/prefs.dart';
 
@@ -14,6 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _userName = TextEditingController();
   final TextEditingController _password = TextEditingController();
   final Prefs _prefs = Prefs();
+  final DatabaseHelper _db = DatabaseHelper();
 
   @override
   void dispose() {
@@ -42,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(height: 215),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.3),
                     Text(
                       'Study Planner App',
                       style: GoogleFonts.poppins(
@@ -51,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                         color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
-                    SizedBox(height: 100),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.15),
                     TextField(
                       controller: _userName,
                       decoration: InputDecoration(
@@ -72,11 +75,38 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(
                       width: double.infinity,
                       child: FilledButton(
-                        onPressed: () {
-                          //   Chill I am putting something just now
-                          //   After the successful entry I.e., when
-                          //   transition over to home set the following true
-                          _prefs.isLoggedIn(true);
+                        onPressed: () async {
+                          final isValid = await _db.checkCredentials(
+                            _userName.text.trim(),
+                            _password.text.trim(),
+                          );
+
+                          if (!mounted) return;
+
+                          if (!isValid) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'Invalid Credentials. Try Again.',
+                                  style: GoogleFonts.poppins(fontSize: 8),
+                                ),
+                                duration: Duration(seconds: 2),
+                                backgroundColor: Colors.black,
+                              ),
+                            );
+                            print('Login valid function: $isValid');
+                            return;
+                          }
+
+                          await _prefs.isLoggedIn(true);
+
+                          if (!mounted) return;
+
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (context) => HomePage()),
+                            (Route<dynamic> route) => false,
+                          );
                         },
                         child: const Text('Login'),
                       ),

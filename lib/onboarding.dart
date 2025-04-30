@@ -1,6 +1,7 @@
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:study_planner/database_helper.dart';
 import 'package:study_planner/home_page.dart';
 import 'package:study_planner/prefs.dart';
 
@@ -183,7 +184,6 @@ class OnboardingPage2 extends StatefulWidget {
   State<OnboardingPage2> createState() => _OnboardingPage2State();
 }
 
-// TODO: SET SOME MEDIA QUERIES IN HERE PLEASE
 class _OnboardingPage2State extends State<OnboardingPage2> {
   final TextEditingController _nameController = TextEditingController();
   final Prefs _prefs = Prefs();
@@ -222,7 +222,7 @@ class _OnboardingPage2State extends State<OnboardingPage2> {
                           offset: Offset(150, 125),
                           child: Image.asset(
                             "assets/pngs/Peaking - Onboarding Transparent Background.png",
-                            height: 420,
+                            height: MediaQuery.of(context).size.height * 0.6,
                           ),
                         ),
                       ),
@@ -232,7 +232,7 @@ class _OnboardingPage2State extends State<OnboardingPage2> {
                       child: Padding(
                         padding: EdgeInsets.all(8),
                         child: SizedBox(
-                          width: 230,
+                          width: MediaQuery.of(context).size.width * 0.6,
                           child: TextField(
                             autocorrect: true,
                             textInputAction: TextInputAction.done,
@@ -249,7 +249,9 @@ class _OnboardingPage2State extends State<OnboardingPage2> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          SizedBox(height: 450),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.63,
+                          ), //450
                           Padding(
                             padding: EdgeInsets.all(8),
                             child: Row(
@@ -268,9 +270,13 @@ class _OnboardingPage2State extends State<OnboardingPage2> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(width: 100),
                                 SizedBox(
-                                  width: 140,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.21,
+                                ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.35,
                                   child: FilledButton(
                                     onPressed: () {
                                       if (_nameController.text.trim().isEmpty) {
@@ -284,7 +290,7 @@ class _OnboardingPage2State extends State<OnboardingPage2> {
                                                 color: Colors.white,
                                               ),
                                             ),
-                                            backgroundColor: Colors.black12,
+                                            backgroundColor: Colors.black,
                                             behavior: SnackBarBehavior.floating,
                                             duration: Duration(seconds: 2),
                                           ),
@@ -538,8 +544,9 @@ class OnboardingPage4 extends StatefulWidget {
 }
 
 class _OnboardingPage4State extends State<OnboardingPage4> {
-  final TextEditingController _email = TextEditingController();
+  final TextEditingController _userName = TextEditingController();
   final TextEditingController _password = TextEditingController();
+  final DatabaseHelper _db = DatabaseHelper();
 
   late ConfettiController _confettiController;
 
@@ -553,7 +560,7 @@ class _OnboardingPage4State extends State<OnboardingPage4> {
 
   @override
   void dispose() {
-    _email.dispose();
+    _userName.dispose();
     _password.dispose();
     _confettiController.dispose();
     super.dispose();
@@ -619,7 +626,7 @@ class _OnboardingPage4State extends State<OnboardingPage4> {
                                 child: Column(
                                   children: [
                                     TextFormField(
-                                      controller: _email,
+                                      controller: _userName,
                                       decoration: InputDecoration(
                                         label: Text('Username'),
                                       ),
@@ -662,8 +669,8 @@ class _OnboardingPage4State extends State<OnboardingPage4> {
                                           SizedBox(
                                             width: 150,
                                             child: FilledButton(
-                                              onPressed: () {
-                                                if (_email.text.isEmpty ||
+                                              onPressed: () async {
+                                                if (_userName.text.isEmpty ||
                                                     _password.text.isEmpty ||
                                                     _password.text.length < 8) {
                                                   ScaffoldMessenger.of(
@@ -671,7 +678,7 @@ class _OnboardingPage4State extends State<OnboardingPage4> {
                                                   ).showSnackBar(
                                                     SnackBar(
                                                       content: Text(
-                                                        "Please enter a username and password. \n Password is Less than 8 digits ",
+                                                        "Please enter a username and a password that is at least 8 characters long.",
                                                       ),
                                                       behavior:
                                                           SnackBarBehavior
@@ -685,29 +692,53 @@ class _OnboardingPage4State extends State<OnboardingPage4> {
                                                   return;
                                                 }
 
-                                                // Will let feature/core-logic handle this and more to come too
-                                                // still incomplete
                                                 if (mounted) {
                                                   setState(() {
                                                     _confettiController.play();
                                                   });
                                                 }
 
-                                                Future.delayed(
-                                                  Duration(seconds: 4),
-                                                  () {
-                                                    Navigator.pushAndRemoveUntil(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder:
-                                                            (context) =>
-                                                                HomePage(),
+                                                if (await _db.insertCredentials(
+                                                  _userName.text.trim(),
+                                                  _password.text.trim(),
+                                                )) {
+                                                  Future.delayed(
+                                                    Duration(seconds: 4),
+                                                    () {
+                                                      if (mounted) {
+                                                        Navigator.pushAndRemoveUntil(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    HomePage(),
+                                                          ),
+                                                          (
+                                                            Route<dynamic>
+                                                            route,
+                                                          ) => false,
+                                                        );
+                                                      }
+                                                    },
+                                                  );
+                                                } else {
+                                                  ScaffoldMessenger.of(
+                                                    context,
+                                                  ).showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(
+                                                        'Error! Contact Support Team',
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                              fontSize: 8,
+                                                            ),
                                                       ),
-                                                      (Route<dynamic> route) =>
-                                                          false,
-                                                    );
-                                                  },
-                                                );
+                                                      duration: Duration(
+                                                        seconds: 2,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }
                                               },
                                               style: FilledButton.styleFrom(
                                                 backgroundColor: Colors.black,

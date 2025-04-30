@@ -5,15 +5,13 @@ import 'package:study_planner/add_course.dart';
 import 'package:study_planner/calendar_page.dart';
 import 'package:study_planner/dashboard_page.dart';
 import 'package:study_planner/login_page.dart';
+import 'package:study_planner/prefs.dart';
 import 'package:study_planner/settings/settings_page.dart';
 import 'package:study_planner/statistics_page.dart';
 import 'package:study_planner/theme_notifier.dart';
 
 class HomePage extends StatefulWidget {
-  // final bool? isDark;
-  // final VoidCallback? toggleDarkTheme;
-
-  const HomePage({super.key /*this.isDark, this.toggleDarkTheme*/});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -21,12 +19,30 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
+
+  final Prefs _prefs = Prefs();
+
   final List<Widget> _routes = [
     DashBoardPage(),
     CalendarPage(),
     StatsPage(),
     SettingsPage(),
   ];
+
+  late String? _profilePicture;
+
+  Future<void> _loadProfilePicture() async {
+    _profilePicture = await _prefs.getAvatar();
+    if (mounted) {
+      setState(() {}); // triggers a UI rebuild for fetching the profile
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfilePicture();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,11 +74,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             SizedBox(width: 8),
-            CircleAvatar(
-              backgroundColor:
-                  Theme.of(context).colorScheme.surfaceContainerHigh,
-              child: Icon(Icons.person),
-            ),
+            CircleAvatar(backgroundImage: AssetImage('$_profilePicture')),
           ],
         ),
       ),

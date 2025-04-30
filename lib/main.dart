@@ -24,19 +24,11 @@ class StudyPlanner extends StatefulWidget {
 }
 
 class _StudyPlannerState extends State<StudyPlanner> {
-  // bool _isDark = false;
-  //
-  // void _toggleDarkTheme() {
-  //   setState(() {
-  //     _isDark = !_isDark;
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Study Planner App',
-      debugShowCheckedModeBanner: true,
+      debugShowCheckedModeBanner: false,
       darkTheme: ThemeData(
         brightness: Brightness.dark,
         useMaterial3: true,
@@ -61,9 +53,8 @@ class _StudyPlannerState extends State<StudyPlanner> {
           Provider.of<ThemeNotifier>(context).isDark
               ? ThemeMode.dark
               : ThemeMode.light,
-      // home: AddCoursePage(),
+      // home: OnboardingPage2(),
       home: AppLauncher(),
-      // home: HomePage(isDark: _isDark, toggleDarkTheme: _toggleDarkTheme),
     );
   }
 }

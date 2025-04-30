@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:bcrypt/bcrypt.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:study_planner/prefs.dart';
 
 /*
   * Static implies that the object created belongs to the class
@@ -102,7 +102,7 @@ class DatabaseHelper {
     title TEXT NOT NULL,
     instructor TEXT,
     schedule TEXT, 
-    courseCode TEXT NOT NULL,
+    courseCode TEXT NOT NULL
     )
     ''');
 
@@ -122,44 +122,83 @@ class DatabaseHelper {
     ''');
 
         await db.execute('''
+        CREATE TABLE statistics(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         assignment_count INTEGER NOT NULL,
         study_material_count INTEGER NOT NULL, 
         created_at TEXT,
         updated_at TEXT
+        )
         ''');
       },
     );
   }
 
-  Future<String> hashPassword(TextEditingController password) async {
-    return BCrypt.hashpw(password.text, BCrypt.gensalt());
+  Future<String> _hashPassword(String password) async {
+    return BCrypt.hashpw(password, BCrypt.gensalt());
   }
 
-  Future<void> insertCredentials(
-    TextEditingController userName,
-    TextEditingController password,
-  ) async {
+  Future<bool> insertCredentials(String userName, String password) async {
+    Prefs preferences = Prefs();
     final credentials = {
-      'username': userName.text.trim(),
-      'password': hashPassword(password),
+      'username': userName,
+      'firstname': await preferences.getNameFromOnBoarding(),
+      'password': await _hashPassword(password),
     }; // JSON is the mapping paradigm
 
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     final db = await database;
-    await db.insert(
+    final int userId = await db.insert(
       'credentials',
       credentials,
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+
+    prefs.setInt('userId', userId);
+
+    return true;
   }
 
-  // Onboarding2
-  Future<void> insertName() async {
+  Future<String?> setAvatarAsProfile() async {
     final db = await database;
-    final prefs = await SharedPreferences.getInstance();
-    await db.insert('credentials', {
-      'name': prefs.getString('name'),
+    final Prefs prefs = Prefs();
+    db.insert('avatar', {
+      'avatarPath': await prefs.getAvatar(),
     }, conflictAlgorithm: ConflictAlgorithm.replace);
+    return await prefs.getAvatar();
+  }
+
+  Future<bool> _checkPassword(
+    String inputPassword,
+    String storedHashedPassword,
+  ) async {
+    return BCrypt.checkpw(inputPassword, storedHashedPassword);
+  }
+
+  Future<bool> checkCredentials(String userName, String inputPassword) async {
+    final db = await database;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    if (prefs.getInt('userId') == null) return false;
+
+    final results = await db.query(
+      'credentials',
+      where: 'id = ?',
+      whereArgs: [prefs.getInt('userId')],
+      columns: ['username', 'password'],
+    );
+
+    if (results.isEmpty) return false;
+
+    final userCredentials = results.first;
+    final storedUsername = userCredentials['username'] as String;
+    final storedHashedPassword = userCredentials['password'] as String;
+    final bool passwordValidity = await _checkPassword(
+      inputPassword,
+      storedHashedPassword,
+    );
+
+    return userName == storedUsername && passwordValidity;
   }
 
   // Reading but nah not yet, there's nothing for me here yet
