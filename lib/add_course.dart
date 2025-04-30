@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:study_planner/course_model.dart';
+import 'package:study_planner/database_helper.dart';
+import 'package:study_planner/home_page.dart';
 
 class AddCoursePage extends StatefulWidget {
   const AddCoursePage({super.key});
@@ -13,6 +16,7 @@ class _AddCoursePageState extends State<AddCoursePage> {
   final TextEditingController _instructorController = TextEditingController();
   final TextEditingController _scheduleController = TextEditingController();
   final TextEditingController _courseCodeController = TextEditingController();
+  final DatabaseHelper _db = DatabaseHelper();
 
   @override
   void dispose() {
@@ -137,8 +141,51 @@ class _AddCoursePageState extends State<AddCoursePage> {
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.7,
                 child: FilledButton(
-                  onPressed: () {
-                    //   Upon saving throw a ScaffoldMessenger SnackBar.
+                  onPressed: () async {
+                    if (_courseTitleController.text.isEmpty ||
+                        _instructorController.text.isEmpty ||
+                        _scheduleController.text.isEmpty ||
+                        _courseCodeController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          duration: Duration(seconds: 2),
+                          backgroundColor: Colors.black,
+                          behavior: SnackBarBehavior.floating,
+                          content: Text(
+                            'All fields must be filled.',
+                            style: GoogleFonts.poppins(fontSize: 8),
+                          ),
+                        ),
+                      );
+                      return;
+                    }
+
+                    final Course course = Course(
+                      courseTitle: _courseTitleController.text.trim(),
+                      instructor: _instructorController.text.trim(),
+                      schedule: _scheduleController.text.trim(),
+                      courseCode: _courseCodeController.text.trim(),
+                    );
+
+                    if (!mounted) return;
+
+                    if (await _db.addNewCourse(course.toJson())) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          duration: Duration(seconds: 2),
+                          backgroundColor: Colors.black,
+                          behavior: SnackBarBehavior.floating,
+                          content: Text(
+                            'New Course Added.',
+                            style: GoogleFonts.poppins(fontSize: 8),
+                          ),
+                        ),
+                      );
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomePage()),
+                      );
+                    }
                   },
                   child: Text("Save"),
                 ),

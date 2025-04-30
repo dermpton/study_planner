@@ -159,12 +159,18 @@ class DatabaseHelper {
     return true;
   }
 
+  // TODO: REMODEL THIS
   Future<String?> setAvatarAsProfile() async {
     final db = await database;
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
     final Prefs prefs = Prefs();
-    db.insert('avatar', {
-      'avatarPath': await prefs.getAvatar(),
-    }, conflictAlgorithm: ConflictAlgorithm.replace);
+    db.update(
+      'avatar',
+      {'avatarPath': await prefs.getAvatar()},
+      where: 'id = ?',
+      whereArgs: [preferences.getInt('userId')],
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
     return await prefs.getAvatar();
   }
 
@@ -199,6 +205,27 @@ class DatabaseHelper {
     );
 
     return userName == storedUsername && passwordValidity;
+  }
+
+  Future<bool> addNewCourse(Map<String, dynamic> courseList) async {
+    final db = await database;
+
+    try {
+      await db.insert(
+        'courses',
+        courseList,
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> displayCourses() async {
+    final db = await database;
+
+    return await db.query('courses');
   }
 
   // Reading but nah not yet, there's nothing for me here yet

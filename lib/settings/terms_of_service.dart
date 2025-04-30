@@ -55,7 +55,7 @@ class _TOSPageState extends State<TOSPage> {
                             borderRadius: BorderRadius.circular(5),
                           ),
                           child: Text(
-                            'Terms of Service',
+                            'ToS',
                             style: GoogleFonts.poppins(
                               fontSize: 10,
                               fontWeight: FontWeight.w600,

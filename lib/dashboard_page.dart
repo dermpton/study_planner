@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:study_planner/course_model.dart';
+import 'package:study_planner/database_helper.dart';
 import 'package:study_planner/prefs.dart';
 import 'package:study_planner/see_all_courses.dart';
 import 'package:study_planner/view_material.dart';
@@ -12,16 +14,21 @@ class DashBoardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashBoardPage> {
-  final List<String> _courses = [
-    'Automata Theory',
-    'Backus Naur Form',
-    'Computational Modelling',
-    'Discrete Mathematics',
-    'Electricity & Magnetism',
-  ];
+  // final List<String> _courses = [
+  //   'Automata Theory',
+  //   'Backus Naur Form',
+  //   'Computational Modelling',
+  //   'Discrete Mathematics',
+  //   'Electricity & Magnetism',
+  // ];
+
+  List<Course> _dynamicCourses = [];
+
+  final DatabaseHelper _db = DatabaseHelper();
+  final Prefs _prefs = Prefs();
+
   String? userNameFromOnboarding;
 
-  final Prefs _prefs = Prefs();
   Future<void> _loadUserNameFromOnboarding() async {
     userNameFromOnboarding = await _prefs.getNameFromOnBoarding();
     if (mounted) {
@@ -29,10 +36,19 @@ class _DashboardPageState extends State<DashBoardPage> {
     }
   }
 
+  Future<void> _loadCourses() async {
+    final courseList = await _db.displayCourses();
+    setState(() {
+      _dynamicCourses =
+          courseList.map((jsonCourse) => Course.fromJson(jsonCourse)).toList();
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     _loadUserNameFromOnboarding();
+    _loadCourses();
   }
 
   @override
@@ -152,7 +168,7 @@ class _DashboardPageState extends State<DashBoardPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Today's Classes",
+                    "My Classes",
                     style: GoogleFonts.poppins(
                       fontWeight: FontWeight.w600,
                       fontSize: 12,
@@ -177,283 +193,316 @@ class _DashboardPageState extends State<DashBoardPage> {
                 ],
               ),
               SizedBox(height: 8),
-              ListView.separated(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: _courses.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final courseName = _courses[index];
-                  return Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(35)),
-                      color: Theme.of(context).colorScheme.surfaceContainerHigh,
+              _dynamicCourses.isEmpty
+                  ? Center(
+                    child: Image.asset(
+                      "assets/pngs/No Courses Yet Solution - Transparent Background.png",
+                      width: MediaQuery.of(context).size.width * 0.75,
+                      height: MediaQuery.of(context).size.width * 0.75,
                     ),
-                    child: ListTile(
-                      title: Text(
-                        courseName,
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
+                  )
+                  : ListView.separated(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: _dynamicCourses.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final course = _dynamicCourses[index];
+                      return Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(35)),
+                          color:
+                              Theme.of(
+                                context,
+                              ).colorScheme.surfaceContainerHigh,
                         ),
-                      ),
-                      leading: CircleAvatar(
-                        radius: 35,
-                        child: Icon(Icons.abc_sharp),
-                      ),
-                      trailing: IconButton(
-                        onPressed: () {
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(35),
-                                topRight: Radius.circular(35),
-                              ),
+                        child: ListTile(
+                          title: Text(
+                            course.courseTitle,
+                            style: GoogleFonts.poppins(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
                             ),
-                            builder: (BuildContext context) {
-                              return SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.85,
-                                child: Container(
-                                  padding: EdgeInsets.all(8),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      SizedBox(height: 8),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                          ),
+                          leading: CircleAvatar(
+                            radius: 35,
+                            child: Icon(Icons.book_sharp),
+                          ),
+                          trailing: IconButton(
+                            onPressed: () {
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(35),
+                                    topRight: Radius.circular(35),
+                                  ),
+                                ),
+                                builder: (BuildContext context) {
+                                  final showModalCourseInfo =
+                                      _dynamicCourses[index];
+
+                                  return SizedBox(
+                                    height:
+                                        MediaQuery.of(context).size.height *
+                                        0.85,
+                                    child: Container(
+                                      padding: EdgeInsets.all(8),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Text(
-                                            'Course Title',
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 2),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Instructor',
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 8),
-                                      SizedBox(
-                                        width: double.infinity,
-                                        child: FilledButton(
-                                          style: FilledButton.styleFrom(
-                                            backgroundColor: Colors.black,
-                                          ),
-                                          onPressed: () {
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder:
-                                                    (context) =>
-                                                        ViewMaterialPage(),
-                                              ),
-                                            );
-                                          },
-                                          child: Row(
+                                          SizedBox(height: 8),
+                                          Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                                MainAxisAlignment.start,
                                             children: [
-                                              Icon(Icons.check),
                                               Text(
-                                                'View Material',
+                                                showModalCourseInfo.courseTitle,
                                                 style: GoogleFonts.poppins(
-                                                  fontSize: 16,
+                                                  fontSize: 20,
                                                   fontWeight: FontWeight.w600,
                                                 ),
                                               ),
-                                              Icon(
-                                                Icons
-                                                    .keyboard_double_arrow_right,
+                                            ],
+                                          ),
+                                          SizedBox(height: 2),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                showModalCourseInfo.instructor,
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 12,
+                                                ),
                                               ),
                                             ],
                                           ),
-                                        ),
-                                      ),
-                                      SizedBox(height: 16),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Course Overview',
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w600,
+                                          SizedBox(height: 8),
+                                          SizedBox(
+                                            width: double.infinity,
+                                            child: FilledButton(
+                                              style: FilledButton.styleFrom(
+                                                backgroundColor: Colors.black,
+                                              ),
+                                              onPressed: () {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder:
+                                                        (
+                                                          context,
+                                                        ) => ViewMaterialPage(
+                                                          /* Add CourseId here to then store the relevant symlinks */
+                                                        ),
+                                                  ),
+                                                );
+                                              },
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Icon(Icons.check),
+                                                  Text(
+                                                    'View Material',
+                                                    style: GoogleFonts.poppins(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                  Icon(
+                                                    Icons
+                                                        .keyboard_double_arrow_right,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(height: 16),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Course Overview',
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Center(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                SizedBox(
+                                                  height: 190,
+                                                  width: 190,
+                                                  child: Card(
+                                                    color:
+                                                        Colors
+                                                            .lightGreenAccent[100],
+                                                    elevation: 0,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                Radius.circular(
+                                                                  35,
+                                                                ),
+                                                              ),
+                                                        ),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        SizedBox(height: 16),
+                                                        CircularProgressIndicator(
+                                                          value: 0.75,
+                                                          color: Colors.black,
+                                                          strokeCap:
+                                                              StrokeCap.round,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .lightGreen[50],
+                                                        ),
+                                                        SizedBox(height: 8),
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                16,
+                                                              ),
+                                                          child: Text(
+                                                            showModalCourseInfo
+                                                                .schedule,
+                                                            style:
+                                                                GoogleFonts.poppins(
+                                                                  fontSize: 8,
+                                                                ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 8),
+                                                        Text(
+                                                          showModalCourseInfo
+                                                              .courseCode,
+                                                          style:
+                                                              GoogleFonts.poppins(
+                                                                fontSize: 8,
+                                                              ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 190,
+                                                  width: 190,
+                                                  child: Card(
+                                                    color: Colors.purple[100],
+                                                    elevation: 0,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                Radius.circular(
+                                                                  35,
+                                                                ),
+                                                              ),
+                                                        ),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        SizedBox(height: 16),
+                                                        CircularProgressIndicator(
+                                                          value: 0.75,
+                                                          color: Colors.black,
+                                                          strokeCap:
+                                                              StrokeCap.round,
+                                                          backgroundColor:
+                                                              Colors.purple[50],
+                                                        ),
+                                                        SizedBox(height: 8),
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                16,
+                                                              ),
+                                                          child: Text(
+                                                            'Schedule: Mondays & Wednesdays, 10:00AM',
+                                                            style:
+                                                                GoogleFonts.poppins(
+                                                                  fontSize: 8,
+                                                                ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 8),
+                                                        Text(
+                                                          'Course Code: SCS9999',
+                                                          style:
+                                                              GoogleFonts.poppins(
+                                                                fontSize: 8,
+                                                              ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(height: 8),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Reminders 🔔',
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          FilledButton(
+                                            style: FilledButton.styleFrom(
+                                              backgroundColor: Colors.black,
+                                            ),
+                                            onPressed: () {},
+                                            child: Text(
+                                              'Create',
+                                              style: GoogleFonts.poppins(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600,
+                                              ),
                                             ),
                                           ),
                                         ],
                                       ),
-                                      Center(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              height: 190,
-                                              width: 190,
-                                              child: Card(
-                                                color:
-                                                    Colors
-                                                        .lightGreenAccent[100],
-                                                elevation: 0,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                        Radius.circular(35),
-                                                      ),
-                                                ),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    SizedBox(height: 16),
-                                                    CircularProgressIndicator(
-                                                      value: 0.75,
-                                                      color: Colors.black,
-                                                      strokeCap:
-                                                          StrokeCap.round,
-                                                      backgroundColor:
-                                                          Colors.lightGreen[50],
-                                                    ),
-                                                    SizedBox(height: 8),
-                                                    Padding(
-                                                      padding: EdgeInsets.all(
-                                                        16,
-                                                      ),
-                                                      child: Text(
-                                                        'Schedule: Mondays & Wednesdays, 10:00AM',
-                                                        style:
-                                                            GoogleFonts.poppins(
-                                                              fontSize: 8,
-                                                            ),
-                                                      ),
-                                                    ),
-                                                    SizedBox(height: 8),
-                                                    Text(
-                                                      'Course Code: SCS9999',
-                                                      style:
-                                                          GoogleFonts.poppins(
-                                                            fontSize: 8,
-                                                          ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 190,
-                                              width: 190,
-                                              child: Card(
-                                                color: Colors.purple[100],
-                                                elevation: 0,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                        Radius.circular(35),
-                                                      ),
-                                                ),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    SizedBox(height: 16),
-                                                    CircularProgressIndicator(
-                                                      value: 0.75,
-                                                      color: Colors.black,
-                                                      strokeCap:
-                                                          StrokeCap.round,
-                                                      backgroundColor:
-                                                          Colors.purple[50],
-                                                    ),
-                                                    SizedBox(height: 8),
-                                                    Padding(
-                                                      padding: EdgeInsets.all(
-                                                        16,
-                                                      ),
-                                                      child: Text(
-                                                        'Schedule: Mondays & Wednesdays, 10:00AM',
-                                                        style:
-                                                            GoogleFonts.poppins(
-                                                              fontSize: 8,
-                                                            ),
-                                                      ),
-                                                    ),
-                                                    SizedBox(height: 8),
-                                                    Text(
-                                                      'Course Code: SCS9999',
-                                                      style:
-                                                          GoogleFonts.poppins(
-                                                            fontSize: 8,
-                                                          ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(height: 8),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Reminders 🔔',
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      FilledButton(
-                                        style: FilledButton.styleFrom(
-                                          backgroundColor: Colors.black,
-                                        ),
-                                        onPressed: () {},
-                                        child: Text(
-                                          'Create',
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                    ),
+                                  );
+                                },
                               );
                             },
-                          );
-                        },
-                        icon: Icon(Icons.chevron_right),
-                      ),
-                      subtitle: Text(
-                        '$courseName N/A',
-                        style: GoogleFonts.poppins(fontSize: 9),
-                      ),
-                    ),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(height: 4);
-                },
-              ),
+                            icon: Icon(Icons.chevron_right),
+                          ),
+                          subtitle: Text(
+                            '${course.courseTitle} | ${course.schedule}',
+                            style: GoogleFonts.poppins(fontSize: 9),
+                          ),
+                        ),
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return SizedBox(height: 4);
+                    },
+                  ),
             ],
           ),
         ),
