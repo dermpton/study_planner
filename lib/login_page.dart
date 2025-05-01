@@ -94,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                                 backgroundColor: Colors.black,
                               ),
                             );
-                            print('Login valid function: $isValid');
+
                             return;
                           }
 

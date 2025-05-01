@@ -222,6 +222,17 @@ class DatabaseHelper {
     }
   }
 
+  Future<bool> deleteCourse(String courseTitle) async {
+    final db = await database;
+
+    try {
+      await db.delete('courses', where: 'title = ?', whereArgs: [courseTitle]);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<List<Map<String, dynamic>>> displayCourses() async {
     final db = await database;
 

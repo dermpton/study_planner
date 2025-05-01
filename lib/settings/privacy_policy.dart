@@ -14,6 +14,7 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         child: Padding(
@@ -82,6 +83,26 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
                       ),
                     ),
                   ],
+                ),
+              ),
+              SizedBox(height: 16),
+              Container(
+                height: MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(50),
+                    topRight: Radius.circular(50),
+                  ),
+                ),
+                child: ListView.separated(
+                  itemBuilder: (BuildContext context, int index) {
+                    return null;
+                  },
+                  itemCount: 1,
+                  separatorBuilder: (BuildContext context, int index) {
+                    return Divider();
+                  },
                 ),
               ),
             ],

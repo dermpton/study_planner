@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -10,10 +13,42 @@ class ViewMaterialPage extends StatefulWidget {
 
 class _ViewMaterialPageState extends State<ViewMaterialPage> {
   final TextEditingController _controller = TextEditingController();
+  List<String> materialPaths = [];
+
+  // TODO: CONSULT DOCUMENTATION: FILE_PICKER
+  Future<void> getRelevantFiles() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      allowMultiple: true,
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'pdf', 'doc'],
+    );
+
+    if (result != null) {
+      materialPaths =
+          result.paths.map((path) => File(path!)).cast<String>().toList();
+    } else {
+      return;
+    }
+  }
+
+  Future<List<String>> saveFile() async {
+    String? outputFile = await FilePicker.platform.saveFile(
+      dialogTitle: 'Please select an output file',
+      fileName: 'output-file.pdf',
+    );
+
+    if (outputFile == null) {
+      return [];
+    }
+
+    return [outputFile];
+  }
+  // TODO: CONSULT DOCUMENTATION: FILE_PICKER
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         child: Padding(
@@ -68,7 +103,6 @@ class _ViewMaterialPageState extends State<ViewMaterialPage> {
                   ),
                 ),
               ),
-
               SizedBox(height: 16),
               Transform.translate(
                 offset: Offset(-100, 0),
@@ -82,6 +116,26 @@ class _ViewMaterialPageState extends State<ViewMaterialPage> {
                       ),
                     ),
                   ],
+                ),
+              ),
+              SizedBox(height: 16),
+              Container(
+                height: MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(50),
+                    topRight: Radius.circular(50),
+                  ),
+                ),
+                child: ListView.separated(
+                  itemBuilder: (BuildContext context, int index) {
+                    return null;
+                  },
+                  itemCount: 1,
+                  separatorBuilder: (BuildContext context, int index) {
+                    return Divider();
+                  },
                 ),
               ),
             ],

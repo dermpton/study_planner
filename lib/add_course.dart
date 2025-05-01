@@ -31,6 +31,7 @@ class _AddCoursePageState extends State<AddCoursePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         child: Padding(
@@ -101,93 +102,113 @@ class _AddCoursePageState extends State<AddCoursePage> {
                   ],
                 ),
               ),
-              SizedBox(height: 8),
-              TextField(
-                controller: _courseTitleController,
-                autocorrect: true,
-                decoration: InputDecoration(
-                  labelText: 'Course Title',
-                  border: OutlineInputBorder(),
-                ),
-              ),
               SizedBox(height: 16),
-              TextField(
-                controller: _instructorController,
-                autocorrect: true,
-                decoration: InputDecoration(
-                  labelText: 'Instructor',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 16),
-              TextField(
-                controller: _courseCodeController,
-                autocorrect: true,
-                decoration: InputDecoration(
-                  labelText: 'Course Code',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 16),
-              TextField(
-                controller: _scheduleController,
-                autocorrect: true,
-                decoration: InputDecoration(
-                  labelText: 'Schedule',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 8),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.7,
-                child: FilledButton(
-                  onPressed: () async {
-                    if (_courseTitleController.text.isEmpty ||
-                        _instructorController.text.isEmpty ||
-                        _scheduleController.text.isEmpty ||
-                        _courseCodeController.text.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          duration: Duration(seconds: 2),
-                          backgroundColor: Colors.black,
-                          behavior: SnackBarBehavior.floating,
-                          content: Text(
-                            'All fields must be filled.',
-                            style: GoogleFonts.poppins(fontSize: 8),
-                          ),
-                        ),
-                      );
-                      return;
-                    }
 
-                    final Course course = Course(
-                      courseTitle: _courseTitleController.text.trim(),
-                      instructor: _instructorController.text.trim(),
-                      schedule: _scheduleController.text.trim(),
-                      courseCode: _courseCodeController.text.trim(),
-                    );
+              Container(
+                padding: EdgeInsets.all(16),
+                height: MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(50),
+                    topRight: Radius.circular(50),
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 8),
+                    TextField(
+                      controller: _courseTitleController,
+                      autocorrect: true,
+                      decoration: InputDecoration(
+                        labelText: 'Course Title',
+                        border: UnderlineInputBorder(),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    TextField(
+                      controller: _instructorController,
+                      autocorrect: true,
+                      decoration: InputDecoration(
+                        labelText: 'Instructor',
+                        border: UnderlineInputBorder(),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    TextField(
+                      controller: _courseCodeController,
+                      autocorrect: true,
+                      decoration: InputDecoration(
+                        labelText: 'Course Code',
+                        border: UnderlineInputBorder(),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    TextField(
+                      controller: _scheduleController,
+                      autocorrect: true,
+                      decoration: InputDecoration(
+                        labelText: 'Schedule',
+                        border: UnderlineInputBorder(),
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      child: FilledButton(
+                        onPressed: () async {
+                          if (_courseTitleController.text.isEmpty ||
+                              _instructorController.text.isEmpty ||
+                              _scheduleController.text.isEmpty ||
+                              _courseCodeController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                duration: Duration(seconds: 2),
+                                backgroundColor: Colors.black,
+                                behavior: SnackBarBehavior.floating,
+                                content: Text(
+                                  'All fields must be filled.',
+                                  style: GoogleFonts.poppins(fontSize: 8),
+                                ),
+                              ),
+                            );
+                            return;
+                          }
 
-                    if (!mounted) return;
+                          final Course course = Course(
+                            courseTitle: _courseTitleController.text.trim(),
+                            instructor: _instructorController.text.trim(),
+                            schedule: _scheduleController.text.trim(),
+                            courseCode: _courseCodeController.text.trim(),
+                          );
 
-                    if (await _db.addNewCourse(course.toJson())) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          duration: Duration(seconds: 2),
-                          backgroundColor: Colors.black,
-                          behavior: SnackBarBehavior.floating,
-                          content: Text(
-                            'New Course Added.',
-                            style: GoogleFonts.poppins(fontSize: 8),
-                          ),
-                        ),
-                      );
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => HomePage()),
-                      );
-                    }
-                  },
-                  child: Text("Save"),
+                          if (!mounted) return;
+
+                          if (await _db.addNewCourse(course.toJson())) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                duration: Duration(seconds: 2),
+                                backgroundColor: Colors.black,
+                                behavior: SnackBarBehavior.floating,
+                                content: Text(
+                                  'New Course Added.',
+                                  style: GoogleFonts.poppins(fontSize: 8),
+                                ),
+                              ),
+                            );
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomePage(),
+                              ),
+                            );
+                          }
+                        },
+                        child: Text("Save"),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

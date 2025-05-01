@@ -14,14 +14,6 @@ class DashBoardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashBoardPage> {
-  // final List<String> _courses = [
-  //   'Automata Theory',
-  //   'Backus Naur Form',
-  //   'Computational Modelling',
-  //   'Discrete Mathematics',
-  //   'Electricity & Magnetism',
-  // ];
-
   List<Course> _dynamicCourses = [];
 
   final DatabaseHelper _db = DatabaseHelper();
@@ -149,7 +141,7 @@ class _DashboardPageState extends State<DashBoardPage> {
                                       ),
                                     ),
                                     Text(
-                                      'Announcements',
+                                      'Resources',
                                       style: GoogleFonts.poppins(fontSize: 10),
                                     ),
                                   ],
@@ -177,12 +169,21 @@ class _DashboardPageState extends State<DashBoardPage> {
                   SizedBox(
                     width: 95,
                     child: OutlinedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
+                      onPressed: () async {
+                        if (!mounted) return;
+                        final refreshCourses = await Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => SeeAllCoursesPage(),
+                            builder:
+                                (context) =>
+                                    SeeAllCoursesPage(courses: _dynamicCourses),
                           ),
                         );
+
+                        if (refreshCourses == true) {
+                          setState(() {
+                            _loadCourses();
+                          });
+                        }
                       },
                       child: Text(
                         'See all',
@@ -289,11 +290,8 @@ class _DashboardPageState extends State<DashBoardPage> {
                                                 Navigator.of(context).push(
                                                   MaterialPageRoute(
                                                     builder:
-                                                        (
-                                                          context,
-                                                        ) => ViewMaterialPage(
-                                                          /* Add CourseId here to then store the relevant symlinks */
-                                                        ),
+                                                        (context) =>
+                                                            ViewMaterialPage(),
                                                   ),
                                                 );
                                               },

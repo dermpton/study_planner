@@ -6,6 +6,7 @@ import 'package:study_planner/calendar_page.dart';
 import 'package:study_planner/dashboard_page.dart';
 import 'package:study_planner/login_page.dart';
 import 'package:study_planner/prefs.dart';
+import 'package:study_planner/settings/edit_profile.dart';
 import 'package:study_planner/settings/settings_page.dart';
 import 'package:study_planner/statistics_page.dart';
 import 'package:study_planner/theme_notifier.dart';
@@ -125,6 +126,13 @@ class _HomePageState extends State<HomePage> {
                   color: Theme.of(context).colorScheme.surfaceContainerHighest,
                 ),
                 child: ListTile(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => EditProfilePage(),
+                      ),
+                    );
+                  },
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                   ),
@@ -183,7 +191,6 @@ class _HomePageState extends State<HomePage> {
                     showAboutDialog(
                       context: context,
                       applicationName: 'Study Planner App',
-                      applicationIcon: const FlutterLogo(),
                       applicationVersion: '1.0.0',
                       applicationLegalese: '© dermpton. All rights reserved.',
                     );

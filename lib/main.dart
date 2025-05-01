@@ -53,7 +53,7 @@ class _StudyPlannerState extends State<StudyPlanner> {
           Provider.of<ThemeNotifier>(context).isDark
               ? ThemeMode.dark
               : ThemeMode.light,
-      // home: HomePage(),
+      // home: ViewMaterialPage(),
       home: AppLauncher(),
     );
   }
