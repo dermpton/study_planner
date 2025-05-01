@@ -73,8 +73,11 @@ import 'package:study_planner/prefs.dart';
 
 class DatabaseHelper {
   static Database? _database;
+
   DatabaseHelper._internal();
+
   static final DatabaseHelper _instance = DatabaseHelper._internal();
+
   factory DatabaseHelper() => _instance;
 
   Future<Database> get database async {
@@ -102,7 +105,7 @@ class DatabaseHelper {
         await db.execute('''
     CREATE TABLE courses(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
+    title TEXT NOT NULL UNIQUE,
     instructor TEXT,
     schedule TEXT, 
     courseCode TEXT NOT NULL
@@ -137,7 +140,7 @@ class DatabaseHelper {
         await db.execute('''
         CREATE TABLE resources(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        courseId INTEGER NOT NULL,
+        courseId TEXT NOT NULL,
         filePath TEXT NOT NULL,
         FOREIGN KEY(courseId) REFERENCES courses(title) ON DELETE CASCADE
         )
@@ -254,23 +257,46 @@ class DatabaseHelper {
   Future<void> saveResource(String courseId, String filePath) async {
     final db = await database;
 
-    await db.insert('resources', {
-      'courseId': courseId,
-      'filePath': filePath,
-    }, conflictAlgorithm: ConflictAlgorithm.replace);
+    // Temporarily disable foreign key constraints
+    await db.execute("PRAGMA foreign_keys = OFF");
+
+    try {
+      await db.insert('resources', {
+        'courseId': courseId,
+        'filePath': filePath,
+      }, conflictAlgorithm: ConflictAlgorithm.replace);
+
+      // print("Resource saved successfully: $courseId - $filePath");
+    } catch (e) {
+      print("Error saving resource: $e");
+      rethrow;
+    } finally {
+      // Re-enable foreign key constraints
+      await db.execute("PRAGMA foreign_keys = ON");
+    }
   }
 
   Future<List<String>> displayResources(String courseId) async {
     final db = await database;
-    final allResources = await db.query(
-      'resources',
-      where: 'courseID = ?',
-      whereArgs: [courseId],
-    );
 
-    return allResources
-        .map((resource) => resource['filePath'] as String)
-        .toList();
+    try {
+      // print("Fetching resources for course: $courseId");
+
+      final allResources = await db.query(
+        'resources',
+        where: 'courseId = ?',
+        whereArgs: [courseId],
+      );
+
+      // print("Found ${allResources.length} resources");
+
+      return allResources
+          .map((resource) => resource['filePath'] as String)
+          .toList();
+    } catch (e) {
+      // print("Error fetching resources: $e");
+      return [];
+    }
   }
 
   Future<bool> deleteResource(String filePath) async {
@@ -287,4 +313,13 @@ class DatabaseHelper {
       return false;
     }
   }
+
+  // Future<void> dumpResourcesTable() async {
+  //   final db = await database;
+  //   final allResources = await db.query('resources');
+  //   print('All resources: $allResources');
+  //
+  //   final allCourses = await db.query('courses');
+  //   print('All courses: $allCourses');
+  // }
 }
