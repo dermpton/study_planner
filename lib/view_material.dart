@@ -1,11 +1,11 @@
-import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:study_planner/database_helper.dart';
 
 class ViewMaterialPage extends StatefulWidget {
-  const ViewMaterialPage({super.key});
+  final String courseId;
+  const ViewMaterialPage({super.key, required this.courseId});
 
   @override
   State<ViewMaterialPage> createState() => _ViewMaterialPageState();
@@ -13,37 +13,33 @@ class ViewMaterialPage extends StatefulWidget {
 
 class _ViewMaterialPageState extends State<ViewMaterialPage> {
   final TextEditingController _controller = TextEditingController();
-  List<String> materialPaths = [];
+  List<String> _resources = [];
+  final DatabaseHelper _db = DatabaseHelper();
 
-  // TODO: CONSULT DOCUMENTATION: FILE_PICKER
-  Future<void> getRelevantFiles() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      allowMultiple: true,
+  Future<void> _getRelevantFile() async {
+    final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['jpg', 'pdf', 'doc'],
     );
 
-    if (result != null) {
-      materialPaths =
-          result.paths.map((path) => File(path!)).cast<String>().toList();
-    } else {
-      return;
+    if (result != null && result.files.single.path != null) {
+      final path = result.files.single.path!;
+      await _db.saveResource(widget.courseId, path);
     }
   }
 
-  Future<List<String>> saveFile() async {
-    String? outputFile = await FilePicker.platform.saveFile(
-      dialogTitle: 'Please select an output file',
-      fileName: 'output-file.pdf',
-    );
-
-    if (outputFile == null) {
-      return [];
-    }
-
-    return [outputFile];
+  void _loadResources() async {
+    final files = await _db.displayResources(widget.courseId);
+    setState(() {
+      _resources = files;
+    });
   }
-  // TODO: CONSULT DOCUMENTATION: FILE_PICKER
+
+  @override
+  void initState() {
+    super.initState();
+    _loadResources();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,23 +115,178 @@ class _ViewMaterialPageState extends State<ViewMaterialPage> {
                 ),
               ),
               SizedBox(height: 16),
+              // SizedBox(height: 16),
               Container(
-                height: MediaQuery.of(context).size.height,
+                // height: MediaQuery.of(context).size.height,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(50),
-                    topRight: Radius.circular(50),
-                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
                 ),
-                child: ListView.separated(
-                  itemBuilder: (BuildContext context, int index) {
-                    return null;
-                  },
-                  itemCount: 1,
-                  separatorBuilder: (BuildContext context, int index) {
-                    return Divider();
-                  },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 8),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.2,
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(50)),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(50)),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Positioned.fill(
+                                child: Image.asset(
+                                  'assets/bgs/Organic Wallpaper 2.png',
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    widget.courseId,
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                        if (!mounted) return;
+                        await _getRelevantFile();
+                      },
+                      icon: Icon(Icons.add),
+                    ),
+                    _resources.isEmpty
+                        ? Center(
+                          child: Image.asset(
+                            'assets/pngs/No Material Yet - Transparent Background.png',
+                            width: MediaQuery.of(context).size.width * 0.35,
+                            height: MediaQuery.of(context).size.width * 0.35,
+                          ),
+                        )
+                        : Expanded(
+                          child: ListView.separated(
+                            itemBuilder: (BuildContext context, int index) {
+                              return ListTile(
+                                leading: CircleAvatar(
+                                  radius: 35,
+                                  child: Icon(Icons.notes_sharp),
+                                ),
+                                title: Text(
+                                  _resources[index],
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                trailing: IconButton(
+                                  onPressed: () async {
+                                    if (!mounted) return;
+
+                                    showAdaptiveDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text(
+                                                'Cancel',
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 8,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                            TextButton(
+                                              onPressed: () async {
+                                                if (await _db.deleteCourse(
+                                                  widget.courseId,
+                                                )) {
+                                                  setState(() {
+                                                    _loadResources();
+                                                  });
+
+                                                  ScaffoldMessenger.of(
+                                                    context,
+                                                  ).showSnackBar(
+                                                    SnackBar(
+                                                      backgroundColor:
+                                                          Colors.black,
+                                                      behavior:
+                                                          SnackBarBehavior
+                                                              .floating,
+                                                      duration: Duration(
+                                                        seconds: 2,
+                                                      ),
+                                                      content: Text(
+                                                        'Material Removed',
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                              fontSize: 8,
+                                                            ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                  Navigator.of(context).pop();
+                                                  Navigator.of(context).pop();
+                                                }
+                                              },
+                                              style: TextButton.styleFrom(
+                                                backgroundColor:
+                                                    Theme.of(
+                                                      context,
+                                                    ).colorScheme.primary,
+                                                foregroundColor: Colors.white,
+                                              ),
+                                              child: Text(
+                                                'Delete',
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 8,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                          content: Text(
+                                            "Delete ${_resources[index]}?",
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  icon: Icon(Icons.delete_sharp),
+                                ),
+                              );
+                            },
+                            itemCount: _resources.length,
+                            separatorBuilder: (
+                              BuildContext context,
+                              int index,
+                            ) {
+                              return Divider();
+                            },
+                          ),
+                        ),
+                  ],
                 ),
               ),
             ],

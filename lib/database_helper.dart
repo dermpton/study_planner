@@ -86,6 +86,9 @@ class DatabaseHelper {
     return await openDatabase(
       join(await getDatabasesPath(), 'student_planner_datasource.db'),
       version: 1,
+      onConfigure: (db) async {
+        await db.execute("PRAGMA foreign_keys = ON");
+      },
       onCreate: (db, version) async {
         await db.execute('''
     CREATE TABLE credentials(
@@ -128,6 +131,15 @@ class DatabaseHelper {
         study_material_count INTEGER NOT NULL, 
         created_at TEXT,
         updated_at TEXT
+        )
+        ''');
+
+        await db.execute('''
+        CREATE TABLE resources(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        courseId INTEGER NOT NULL,
+        filePath TEXT NOT NULL,
+        FOREIGN KEY(courseId) REFERENCES courses(title) ON DELETE CASCADE
         )
         ''');
       },
@@ -239,9 +251,40 @@ class DatabaseHelper {
     return await db.query('courses');
   }
 
-  // Reading but nah not yet, there's nothing for me here yet
-  Future<List<Map<String, dynamic>>> getAllCredentials() async {
+  Future<void> saveResource(String courseId, String filePath) async {
     final db = await database;
-    return await db.query('credentials');
+
+    await db.insert('resources', {
+      'courseId': courseId,
+      'filePath': filePath,
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  Future<List<String>> displayResources(String courseId) async {
+    final db = await database;
+    final allResources = await db.query(
+      'resources',
+      where: 'courseID = ?',
+      whereArgs: [courseId],
+    );
+
+    return allResources
+        .map((resource) => resource['filePath'] as String)
+        .toList();
+  }
+
+  Future<bool> deleteResource(String filePath) async {
+    final db = await database;
+
+    try {
+      await db.delete(
+        'resources',
+        where: 'filePath = ?',
+        whereArgs: [filePath],
+      );
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }

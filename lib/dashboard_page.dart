@@ -290,8 +290,13 @@ class _DashboardPageState extends State<DashBoardPage> {
                                                 Navigator.of(context).push(
                                                   MaterialPageRoute(
                                                     builder:
-                                                        (context) =>
-                                                            ViewMaterialPage(),
+                                                        (
+                                                          context,
+                                                        ) => ViewMaterialPage(
+                                                          courseId:
+                                                              showModalCourseInfo
+                                                                  .courseTitle,
+                                                        ),
                                                   ),
                                                 );
                                               },
