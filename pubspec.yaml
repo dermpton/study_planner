@@ -55,12 +55,14 @@ dependencies:
   file_picker: ^10.1.2
 
 flutter_launcher_icons:
-  image_path_android: "assets/pngs/Study Planner App Splash Screen -Transparent Background.png"
-  android: "ic_study_planner"
+  image_path_android: "assets/pngs/app_icon.png"
+  android: true
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/pngs/app_icon.png"
   adaptive_icon_foreground_inset: 8
   web:
     generate: true
-    image_path: "assets/pngs/Study Planner App Splash Screen -Transparent Background.png"
+    image_path: "assets/pngs/app_icon.png"
     background_color: "#hexcode"
     theme_color: "#hexcode"
 
@@ -91,7 +93,6 @@ flutter:
      - assets/svgs/supporting-business-person-svgrepo-com.svg
      - assets/svgs/desk-lamp-svgrepo-com.svg
      - assets/pngs/Study Planner App Splash Screen.png
-     - assets/pngs/Study Planner App Splash Screen -Transparent Background.png
      - assets/pngs/Student Studying - Transparent Background.png
      - assets/pngs/Peaking - Onboarding Transparent Background.png
      - assets/pngs/College Girl Login Page - Transparent Background.png

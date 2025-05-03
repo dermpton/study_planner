@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="study_planner"
+        android:label="Study Planner"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_study_planner">
+        android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -25,7 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
 
                 <data
-                    android:scheme="com.example.study_planner"
+                    android:scheme="com.dermpton.study_planner"
                     android:host="oauth2redirect" />
             </intent-filter>
         </activity>

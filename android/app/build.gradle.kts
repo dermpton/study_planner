@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.study_planner"
+    namespace = "com.dermpton.study_planner"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
 
@@ -21,11 +21,13 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.study_planner"
+        applicationId = "com.dermpton.study_planner"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdkVersion(23)
-        targetSdkVersion(33)
+        minSdk = 23
+//        minSdkVersion(23)
+        targetSdk = 33
+//        targetSdkVersion(33)
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
